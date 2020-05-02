@@ -34,8 +34,7 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 
 export const getPost = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id).populate({
-    path: "bootcamp",
-    select: "name description",
+    path: "user",
   });
 
   if (!post) {

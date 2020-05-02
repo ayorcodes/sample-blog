@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const PostSchema = new mongoose.Schema({
   title: {
@@ -10,6 +11,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a body"],
   },
+  slug: String,
   tags: {
     // Array of strings
     type: [String],
@@ -36,6 +38,10 @@ const PostSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  views: {
+    type: Number,
+    default: 0,
+  }
 });
 
 // Static method to get an avg of course tuitions
@@ -65,6 +71,12 @@ PostSchema.pre('remove', function () {
   const app: any = this;
   app.constructor.getAverageCost(app.bootcamp);
 }); */
+
+PostSchema.pre("save", function (next) {
+  const app: any = this;
+  app.slug = slugify(app.title, { lower: true }) + app.user._id;
+  next();
+});
 
 const Post = mongoose.model("Post", PostSchema);
 

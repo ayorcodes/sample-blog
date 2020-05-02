@@ -3,7 +3,11 @@ import bycrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
-  name: {
+  first_name: {
+    type: String,
+    required: [true, "Please add a name"],
+  },
+  last_name: {
     type: String,
     required: [true, "Please add a name"],
   },
@@ -15,6 +19,11 @@ const userSchema = new mongoose.Schema({
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please add a valid email",
     ],
+  },
+  about: {
+    type: String,
+    required: [true, "Please add an about description"],
+    maxlength: [200, "max length of 300 characters"]
   },
   password: {
     type: String,
