@@ -33,15 +33,23 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 //@access Public
 
 export const getPost = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id).populate({
-    path: "user",
-  });
+  const post: any = await Post.findById(req.params.id);
 
   if (!post) {
     return next(
       new ErrorResponse(`No post with Id of ${req.params.id}`, 404)
     );
   }
+
+  const update = Post.updateOne({_id: post._id}, {
+    views: post.views + 1
+  }, function(err, affected, resp) {
+    //console.log(resp);
+  });
+
+  post.populate({
+    path: "user",
+  });
 
   res.status(200).json({
     success: true,
@@ -91,7 +99,7 @@ export const updatePost = asyncHandler(async (req, res, next) => {
   post = await Post.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
-  })
+  });
 
   res.status(200).json({
     success: true,
