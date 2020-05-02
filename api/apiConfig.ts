@@ -30,7 +30,7 @@ export class ApiConfigService {
         const Server = this.server;
         if (Server === 'local') return 'http://localhost:5000/api/v1/';
 
-        return 'http://192.168.43.103:8000/api/';
+        return 'https://ghostmeblog.herokuapp.com/api/v1/';
     }
     private setHeaderAuthorization() {
         return { Authorization: `Bearer ${localStorage.getItem('token')}` };
