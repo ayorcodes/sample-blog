@@ -14,9 +14,8 @@ export const getPosts = asyncHandler(async (req, res, next) => {
     query = Post.find({ bootcamp: req.params.bootcampId });
   } else {
     query = Post.find().populate({
-      path: "bootcamp",
-      select: "name description",
-    });
+      path: "user",
+    }).sort({createdAt: -1});
   }
 
   const posts = await query;
@@ -33,7 +32,9 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 //@access Public
 
 export const getPost = asyncHandler(async (req, res, next) => {
-  const post: any = await Post.findById(req.params.id);
+  const post: any = await Post.findById(req.params.id).populate({
+    path: "user",
+  });
 
   if (!post) {
     return next(
@@ -45,10 +46,6 @@ export const getPost = asyncHandler(async (req, res, next) => {
     views: post.views + 1
   }, function(err, affected, resp) {
     //console.log(resp);
-  });
-
-  post.populate({
-    path: "user",
   });
 
   res.status(200).json({

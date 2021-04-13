@@ -7,14 +7,16 @@ import { User } from "../models/User";
 //@access Public
 
 export const register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body
+  const { first_name, last_name, email, password, about, image } = req.body
 
   //Create user
   const user: any = await User.create({
-    name,
+    first_name,
+    last_name,
     email,
     password,
-    role
+    about,
+    image,
   });
 
   sendTokenResponse(user, 200, res);
@@ -82,7 +84,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 //@access Private
 
 export const getMe = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.body.user.id);
 
   res.status(200).json({
     success: true,

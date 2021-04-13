@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middleware/error";
 import cookieParser from "cookie-parser";
+import cors from 'cors';
 
 //load env vars
 dotenv.config({
@@ -16,8 +17,11 @@ connectDB();
 //Route files
 import { postRouter } from "./routes/postRouter";
 import { authRouter } from "./routes/authRouter";
+import { userRouter } from "./routes/userRouter";
 
 const app = express();
+
+app.use(cors());
 
 //Body parser
 app.use(express.json());
@@ -33,6 +37,7 @@ if (process.env.NODE_ENV === "development") {
 //Mount routers
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

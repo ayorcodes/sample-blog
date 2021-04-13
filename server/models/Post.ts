@@ -11,6 +11,11 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a body"],
   },
+  summary: {
+    type: String,
+    required: [true, "Please add summary"],
+    maxlength: [200, "max length of 200 characters"]
+  },
   slug: String,
   tags: {
     // Array of strings
@@ -27,6 +32,7 @@ const PostSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
+    required: true,
     default: "no-photo.jpg",
   },
   createdAt: {

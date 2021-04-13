@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  image: {
+    required: [true, "Please select an image"],
+    type: String,
+  },
   resetPasswordToken: {
     type: String,
   },
@@ -41,6 +45,22 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+},
+{
+  toJSON: {
+    virtuals: true,
+  },
+  toObject: {
+    virtuals: true,
+  },
+});
+
+userSchema.virtual("posts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "user",
+  justOne: false,
+
 });
 
 // Encrypt password using bycrypt
